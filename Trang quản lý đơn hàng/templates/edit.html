@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa đơn hàng</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  </head>
+
+  <style>
+  </style>
+
+  <body>
+    <h1 class="text__heading">Sửa đơn hàng</h1>
+    <form class="setting__form" method="POST" action="/update/{{order[0]}}">
+      <label for="customer_name">Khách hàng:</label>
+      <input class="setting__input" type="text" id="customer_name" name="customer_name" value="{{ order[1] }}"><br>
+
+      <label for="product_name">Sản phẩm:</label>
+      <input class="setting__input" type="text" id="product_name" name="product_name" value="{{ order[2] }}" readonly><br>
+
+      <label for="quantity">Số lượng:</label>
+      <input class="setting__input" type="text" id="quantity" name="quantity" value="{{ order[3] }}"><br>
+
+      <input class="setting__button" type="submit" value="Sửa đơn hàng">
+    </form>
+    {% if error_message %}
+      <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+  </body>
+</html>

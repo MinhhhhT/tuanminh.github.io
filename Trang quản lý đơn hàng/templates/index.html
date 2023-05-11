@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách đơn hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+
+<body>
+    <h1 class="main__heading">Quản lý đơn hàng</h1>
+    <form action="{{ url_for('search_orders') }}" method="GET">
+        <input class="search__input" type="text" name="search_query" placeholder="Tìm kiếm đơn hàng...">
+        <input class="search__button" type="submit" value="Tìm kiếm">
+        <a class="add__button" href="{{ url_for('home') }}">Danh sách sản phẩm</a>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Mã đơn hàng</th>
+          <th>Tên khách hàng</th>
+          <th>Sản phẩm</th>
+          <th>Ngày đặt hàng</th>
+          <th>Số lượng</th>
+          <th>Tổng giá tiền</th>
+          <th>Ảnh</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if orders %}
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order[0] }}</td>
+                    <td>{{ order[1] }}</td>
+                    <td>{{ order[2] }}</td>
+                    <td>{{ order[3] }}</td>
+                    <td>{{ order[4] }}</td>
+                    <td class="price-js">{{ order[5] }}</td>
+                    <td><img class="main__product__image" src="../static/images/{{ order[6] }}" alt=""></td>
+                    <td>
+                    <a href="/update/{{order[0]}}">Sửa</a>
+                    <a href="/delete/{{order[0]}}" onclick="return confirm('Bạn có chắc muốn xóa đơn hàng này?')">Xóa</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+                <p class="alert__none">Không tìm thấy sản phẩm</p>
+        {% endif %} 
+      </tbody>
+    </table>
+  </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script>
+        // Lấy phần tử có class là "price-js"
+        const priceElements = document.querySelectorAll('.price-js');
+        // Lấy giá trị của phần tử và chuyển đổi sang kiểu số
+
+        for (let priceElement of priceElements) {
+        let priceValue = parseFloat(priceElement.textContent)
+        // Định dạng giá trị và cập nhật vào phần tử HTML
+        const formatted_price = priceValue.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        priceElement.textContent = formatted_price;
+        console.log(formatted_price)
+        }
+    </script>
+</body>
+</html>
